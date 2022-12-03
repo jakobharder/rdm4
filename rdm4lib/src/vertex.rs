@@ -108,6 +108,7 @@ pub(crate) type T2f = AnnoData<f32, { UniqueIdentifier::Texcoord as u32 }, 2>;
 pub(crate) type T2h = AnnoData<f16, { UniqueIdentifier::Texcoord as u32 }, 2>;
 pub(crate) type I4b = AnnoData<u8, { UniqueIdentifier::I4b as u32 }, 4>;
 pub(crate) type W4b = AnnoData<u8, { UniqueIdentifier::W4b as u32 }, 4>;
+// pub(crate) type C4b = AnnoData<u8, { UniqueIdentifier::C4c as u32 }, 4>;
 
 impl<T: Default + Copy, const I: u32, const N: usize> Default for AnnoData<T, I, N> {
     fn default() -> Self {
@@ -485,6 +486,15 @@ impl VertexIdentifier {
             count: 1,
         }
     }
+    
+    pub const fn c4b() -> Self {
+        VertexIdentifier {
+            uniq: UniqueIdentifier::C4c,
+            unit_size: IdentifierSize::U32,
+            interpretation: 0x2,
+            count: 1,
+        }
+    }
 }
 
 pub const fn p4h_n4b_g4b_b4b_t2h_i4b() -> [VertexIdentifier; 6] {
@@ -520,12 +530,25 @@ pub const fn p4h_n4b_g4b_b4b_t2h() -> [VertexIdentifier; 5] {
     ]
 }
 
+pub const fn p4h_n4b_g4b_b4b_t2h_c4b_c4b() -> [VertexIdentifier; 7] {
+    [
+        VertexIdentifier::p4h(),
+        VertexIdentifier::n4b(),
+        VertexIdentifier::g4b(),
+        VertexIdentifier::b4b(),
+        VertexIdentifier::t2h(),
+        VertexIdentifier::c4b(),
+        VertexIdentifier::c4b(),
+    ]
+}
+
 #[derive(Debug, Clone, Eq, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum TargetVertexFormat {
     P4h_N4b_G4b_B4b_T2h,
     P4h_N4b_G4b_B4b_T2h_I4b,
     P4h_N4b_G4b_B4b_T2h_I4b_W4b,
+    P4h_N4b_G4b_B4b_T2h_C4b_C4b
 }
 impl FromStr for TargetVertexFormat {
     type Err = String;
@@ -535,6 +558,7 @@ impl FromStr for TargetVertexFormat {
             "P4h_N4b_G4b_B4b_T2h" => Ok(TargetVertexFormat::P4h_N4b_G4b_B4b_T2h),
             "P4h_N4b_G4b_B4b_T2h_I4b" => Ok(TargetVertexFormat::P4h_N4b_G4b_B4b_T2h_I4b),
             "P4h_N4b_G4b_B4b_T2h_I4b_W4b" => Ok(TargetVertexFormat::P4h_N4b_G4b_B4b_T2h_I4b_W4b),
+            "P4h_N4b_G4b_B4b_T2h_C4b_C4b" => Ok(TargetVertexFormat::P4h_N4b_G4b_B4b_T2h_C4b_C4b),
             _ => Err(format!("Invalid value for VertexFormat: {}", input)),
         }
     }

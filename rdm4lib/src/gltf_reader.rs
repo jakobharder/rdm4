@@ -609,6 +609,9 @@ impl<'a> ImportedGltf {
                 TargetVertexFormat::P4h_N4b_G4b_B4b_T2h_I4b_W4b => {
                     crate::vertex::p4h_n4b_g4b_b4b_t2h_i4b_w4b().to_vec()
                 }
+                TargetVertexFormat::P4h_N4b_G4b_B4b_T2h_C4b_C4b => {
+                    crate::vertex::p4h_n4b_g4b_b4b_t2h_c4b_c4b().to_vec()
+                }
             };
             let vertsize = ident.iter().map(|x| x.get_size()).sum();
 
@@ -832,6 +835,20 @@ impl<'a> ImportedGltf {
                                 (weight[3] * 255.0).round() as u8,
                             ],
                         };
+                        verts_vec.put_vertex_data(&w4b);
+                    }
+
+                    if dst_format == TargetVertexFormat::P4h_N4b_G4b_B4b_T2h_C4b_C4b {
+                        let weight = weights_iter.next().unwrap();
+                        let w4b = W4b {
+                            data: [
+                                (weight[0] * 255.0).round() as u8,
+                                (weight[1] * 255.0).round() as u8,
+                                (weight[2] * 255.0).round() as u8,
+                                (weight[3] * 255.0).round() as u8,
+                            ],
+                        };
+                        verts_vec.put_vertex_data(&w4b);
                         verts_vec.put_vertex_data(&w4b);
                     }
 
